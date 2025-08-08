@@ -1,0 +1,75 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Home</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    </head>
+    <body>
+        <h1>Manage Sales & Customers</h1>
+        <h2>Add Products</h2>
+        <form action="{% url 'add_product' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="prod_name" placeholder="Product Name" required>
+            <input type="number" name="quantity" placeholder="Qty." required>
+            <input type="number" name="price" placeholder="Price" required>
+            <input type="number" name="discount" placeholder="Discount">
+            <button type="submit">Add</button>
+        </form>
+        
+        <h3>Products</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price (Rs.)</th>
+                <th>Discount (%)</th>
+            </tr>
+            {% for product in data %}
+            <tr>
+                <td>{{ product.prod_name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.discount }}</td>
+                <td><a href = '{% url "remove_product" product.id %}'>Remove</a></td>
+            </tr>
+            {% endfor %}
+        </table><br><br>
+        <h2>Customer Details</h2>
+        <form action="{% url 'add_customer' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Customer Name" required>
+            <input type="text" name="mobile" placeholder="Mobile Number" required>
+            <input type="email" name="email" placeholder="Email">
+            <input type="text" name="address" placeholder="Address">
+            <button type="submit">Add</button>
+        </form>
+        <h3>Customers</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Address</th>
+            </tr>
+            {% for customer in customer_data %}
+            <tr>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.mobile }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.address }}</td>
+                <td><a href = '{% url "remove_customer" customer.id %}'>Remove</a></td>
+            </tr>
+            {% endfor %}
+        </table><br><br>
+        <div class="center-button">
+            <a href="{% url 'invoice' %}">
+                <button>Generate Invoice</button>
+            </a>
+        </div>        
+    </body>
+</html>
